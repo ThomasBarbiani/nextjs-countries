@@ -3,12 +3,10 @@ import Link from "next/link";
 
 export default function CountryCard({
   name, 
-  ptName, 
   flag, 
   flagAlt
 }: {
   name: string
-  ptName: string
   flag: string
   flagAlt: string
 }) {
@@ -24,7 +22,7 @@ export default function CountryCard({
           <Image src={flag} alt={flagAlt} fill className="object-cover"/>
         </div>
         <h1 className="font-bold text-xl text-center mt-2">
-          {ptName}
+          {name}
         </h1>
       </article>
     </Link>

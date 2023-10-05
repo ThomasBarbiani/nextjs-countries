@@ -1,15 +1,8 @@
 import CountryCard from "@/components/country-card";
-import Image from "next/image";
-import Link from "next/link";
 
 export type Country = {
   name: {
     common: string
-  }
-  translations: {
-    por: {
-      common:string
-    } 
   }
   flags:{
     svg: string
@@ -43,7 +36,6 @@ export default async function Home() {
         <CountryCard 
           key={country.name.common}
           name={country.name.common}
-          ptName={country.translations.por.common}
           flag={country.flags.svg}
           flagAlt={country.flags.alt}
         />

@@ -22,7 +22,6 @@ async function getCountryBordersByName(name:string) {
     const borderCountry = countries.find(country => country.cca3 === border)!
     return {
       name: borderCountry.name.common,
-      ptName: borderCountry.translations.por.common,
       flag: borderCountry.flags.svg,
       flagAlt: borderCountry.flags.alt
     }
@@ -41,7 +40,7 @@ export default async function CountryPage({
   return (
     <section className="flex flex-col container mt-16 mb-16">
       <h1 className="text-5xl text-center font-bold text-gray-800">
-        {country.translations.por.common}
+        {country.name.common}
       </h1>
       <Link className="flex items-center py-2" href="/">
         <Image 
@@ -50,7 +49,7 @@ export default async function CountryPage({
           src="/arrow-back.svg" 
           alt="Seta de voltar"
         />
-        Voltar
+        Go Back
       </Link>
       <article 
         className="flex md:flex-row flex-col justify-between min-w-full p-10 
@@ -63,15 +62,15 @@ export default async function CountryPage({
             </h2>
           )}
           <h2 className="text-xl text-gray-800 mt-3">
-            <b>Continente:</b> {country.region} 
-            {country.subregion && `- ${country.subregion}`}
+            <b>Continent:</b> {country.region} 
+            {country.subregion && ` - ${country.subregion}`}
           </h2>
           <h2 className="text-xl text-gray-800 mt-3">
-            <b>População:</b> {formatter.format(country.population)}
+            <b>Population:</b> {formatter.format(country.population)}
           </h2>
           {country.languages && (
             <h2 className="text-xl text-gray-800 mt-3">
-              <b>Línguas faladas:</b>
+              <b>Spoken Languages:</b>
               <br />
               {Object.values(country.languages).map((language) => (
                 <span 
@@ -94,21 +93,28 @@ export default async function CountryPage({
           />
         </div>
       </article>
-      <section>
+      {borderCountries ? (
+        <section>
+          <h3 className="mt-12 text-2xl font-semibold text-gray-800">
+            Countries that share a border with {country.name.common}        
+          </h3>
+          <div 
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 
+            lg:grid-cols-4 xl:grid-cols-5 w-full container gap-2 mt-2"
+          >
+            {borderCountries?.map((border) => (
+              <CountryCard 
+                key={border.name}
+                {...border}
+              />
+            ))}
+          </div>
+        </section>
+      ) : (
         <h3 className="mt-12 text-2xl font-semibold text-gray-800">
-          Países que fazem fronteira
+          {country.name.common} has no neighboring countries.
         </h3>
-        <div 
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 
-          lg:grid-cols-4 xl:grid-cols-5 w-full container gap-2 mt-2"
-        >
-          {borderCountries?.map((border) => (
-            <CountryCard 
-              {...border}
-            />
-          ))}
-        </div>
-      </section>
+      )}
     </section>
   )
 }
